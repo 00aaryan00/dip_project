@@ -1,0 +1,112 @@
+{
+    "baseline": {
+        "accuracy": 0.65,
+        "precision": 0.6,
+        "recall": 0.9,
+        "f1_score": 0.72,
+        "false_reject_rate": 0.6,
+        "confusion_matrix": [
+            [
+                4,
+                6
+            ],
+            [
+                1,
+                9
+            ]
+        ]
+    },
+    "random_forest": {
+        "accuracy": 0.8,
+        "precision": 0.8,
+        "recall": 0.8,
+        "f1_score": 0.8,
+        "false_reject_rate": 0.2,
+        "confusion_matrix": [
+            [
+                8,
+                2
+            ],
+            [
+                2,
+                8
+            ]
+        ],
+        "confusion_matrix_labels": [
+            "ACCEPT",
+            "REJECT"
+        ],
+        "feature_importances": {
+            "sharpness": 0.3019,
+            "noise": 0.2104,
+            "contrast": 0.1278,
+            "brightness": 0.1123,
+            "bg_uniformity": 0.0938,
+            "alignment_score": 0.0668,
+            "object_area_ratio": 0.0611,
+            "boundary_margin": 0.0259
+        },
+        "classification_report": {
+            "ACCEPT": {
+                "precision": 0.8,
+                "recall": 0.8,
+                "f1-score": 0.8,
+                "support": 10.0
+            },
+            "REJECT": {
+                "precision": 0.8,
+                "recall": 0.8,
+                "f1-score": 0.8,
+                "support": 10.0
+            },
+            "accuracy": 0.8,
+            "macro avg": {
+                "precision": 0.8,
+                "recall": 0.8,
+                "f1-score": 0.8,
+                "support": 20.0
+            },
+            "weighted avg": {
+                "precision": 0.8,
+                "recall": 0.8,
+                "f1-score": 0.8,
+                "support": 20.0
+            }
+        },
+        "predictions": [
+            "ACCEPT",
+            "ACCEPT",
+            "REJECT",
+            "REJECT",
+            "ACCEPT",
+            "REJECT",
+            "ACCEPT",
+            "REJECT",
+            "ACCEPT",
+            "REJECT",
+            "ACCEPT",
+            "REJECT",
+            "ACCEPT",
+            "REJECT",
+            "ACCEPT",
+            "ACCEPT",
+            "ACCEPT",
+            "REJECT",
+            "REJECT",
+            "REJECT"
+        ]
+    },
+    "cross_validation": {
+        "mean_accuracy": 0.8625,
+        "std_accuracy": 0.0468,
+        "mean_f1": 0.8605,
+        "std_f1": 0.0482,
+        "fold_accuracies": [
+            0.875,
+            0.875,
+            0.8125,
+            0.8125,
+            0.9375
+        ]
+    }
+}

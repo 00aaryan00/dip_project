@@ -1,0 +1,6 @@
+Metric,Baseline (Rule-Based DIP),Improved (Random Forest)
+Accuracy,0.6500,0.8000
+Precision (Defect Detection),0.6000,0.8000
+Recall (Defect Detection),0.9000,0.8000
+F1 Score,0.7200,0.8000
+False Reject Rate (FRR),0.6000,0.2000
