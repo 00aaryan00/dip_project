@@ -5,6 +5,7 @@ DIP Academic Project Prototype
 
 import os
 import glob
+import textwrap
 import warnings
 import numpy as np
 import pandas as pd
@@ -39,12 +40,12 @@ st.markdown("""
     .main-title {
         font-size: 2.2rem;
         font-weight: 700;
-        color: #1E3A8A;
+        color: #3B82F6;
         margin-bottom: 0.2rem;
     }
     .sub-title {
         font-size: 1.05rem;
-        color: #4B5563;
+        opacity: 0.8;
         margin-bottom: 1.5rem;
     }
     .metric-card {
@@ -196,16 +197,16 @@ def main():
 
     if selected_image is None:
         st.info("👈 Please select an academic test case from the sidebar or upload a product image to begin inspection.")
-        st.markdown("""
+        st.markdown(textwrap.dedent(r"""
         ### Digital Image Processing Pipeline Overview
-        1. **Stage 1: Preprocessing** — Normalization, color-space mapping ($BGR \rightarrow RGB \rightarrow Grayscale$), scaling.
-        2. **Stage 2: Brightness & Contrast** — Mean intensity $\mu$, standard deviation $\sigma$, and Histogram Equalization.
-        3. **Stage 3: Sharpness & Blur** — Discrete 2nd-order Laplacian operator variance $\text{Var}(\nabla^2 I)$.
-        4. **Stage 4: Noise Detection & Filtering** — Immerkær noise proxy $\sigma_n$, Gaussian smoothing vs. Median order filtering.
+        1. **Stage 1: Preprocessing** — Normalization, color-space mapping ($\text{BGR} \rightarrow \text{RGB} \rightarrow \text{Grayscale}$), scaling.
+        2. **Stage 2: Brightness & Contrast** — Mean intensity ($\mu$), standard deviation ($\sigma$), Histogram Equalization, and Contrast Stretching.
+        3. **Stage 3: Sharpness & Blur** — Discrete 2nd-order Laplacian operator variance ($\text{Var}(\nabla^2 I)$).
+        4. **Stage 4: Noise Detection & Filtering** — Immerkær noise proxy ($\sigma_n$), Gaussian smoothing vs. Median order filtering.
         5. **Stage 5 & 6: Segmentation & Morphology** — Otsu between-class variance maximization, Morphological Opening & Closing.
         6. **Stage 7: Object & Layout Compliance** — Spatial image moments ($m_{10}/m_{00}, m_{01}/m_{00}$), Centroid alignment, Bounding box cropping check.
         7. **Stage 8: Decision Engines** — Baseline deterministic rules vs. Random Forest ML classifier.
-        """)
+        """))
         return
 
     # Run DIP Pipeline
@@ -456,12 +457,12 @@ ACTIONABLE SELLER RECOMMENDATIONS:
     morph = seg.get("morphology", {})
     if morph:
         with st.expander("🔬 View Step-by-Step Morphological Operations (Opening & Closing Evolution)", expanded=False):
-            st.markdown("""
+            st.markdown(textwrap.dedent(r"""
             **Mathematical Operations:**
-            1. **Raw Otsu Threshold Mask:** Initial separation based on maximal between-class variance $\\sigma_B^2(t)$.
-            2. **Morphological Opening ($A \\circ B = (A \\ominus B) \\oplus B$):** Erosion followed by Dilation (removes isolated background noise specks).
-            3. **Morphological Closing ($A \\bullet B = (A \\oplus B) \\ominus B$):** Dilation followed by Erosion (fills small internal pinholes in product textures).
-            """)
+            1. **Raw Otsu Threshold Mask:** Initial separation based on maximal between-class variance $\sigma_B^2(t)$.
+            2. **Morphological Opening ($A \circ B = (A \ominus B) \oplus B$):** Erosion followed by Dilation (removes isolated background noise specks).
+            3. **Morphological Closing ($A \bullet B = (A \oplus B) \ominus B$):** Dilation followed by Erosion (fills small internal pinholes in product textures).
+            """))
             m_col1, m_col2, m_col3 = st.columns(3)
             with m_col1:
                 st.image(morph.get("raw_mask", seg["raw_mask"]), caption="1. Raw Otsu Mask", width="stretch")
@@ -489,14 +490,14 @@ ACTIONABLE SELLER RECOMMENDATIONS:
         cx_str = f"({centroid[0]}, {centroid[1]})" if centroid else "N/A"
         bbox_str = f"x={bbox[0]}, y={bbox[1]}, w={bbox[2]}, h={bbox[3]}" if bbox else "N/A"
 
-        st.markdown(f"""
+        st.markdown(textwrap.dedent(f"""
         **Geometric Layout Measurements:**
         - **Spatial Moments Centroid $(C_x, C_y)$:** `{cx_str}` (Image Center: `{prep['processed_shape'][1]//2}, {prep['processed_shape'][0]//2}`)
         - **Bounding Box Rect $(x, y, w, h)$:** `{bbox_str}`
         - **Centering Alignment Score:** `{features['alignment_score']:.2f} / 1.00`
         - **Boundary Margin Ratio:** `{features['boundary_margin']:.3f}`
         - **Background Uniformity Score:** `{features['bg_uniformity']:.2f} / 1.00`
-        """)
+        """))
 
         if obj.get("is_cropped_warning", False):
             st.warning(f"⚠️ **Boundary Warning:** {obj.get('cropping_message', 'Product touches image edges.')}")
@@ -509,10 +510,10 @@ ACTIONABLE SELLER RECOMMENDATIONS:
 def display_benchmark_report():
     """Displays the Quantitative Baseline vs Random Forest comparison tab."""
     st.markdown("## 📊 Quantitative Benchmark: Baseline vs. Random Forest")
-    st.markdown("""
+    st.markdown(textwrap.dedent("""
     This section presents the required academic comparison between the **Traditional DIP Baseline (Fixed Rules)**
     and the **Improved Machine Learning Model (Random Forest)**, both tested on the exact same held-out test dataset (zero data leakage).
-    """)
+    """))
 
     comp_csv = os.path.join("results", "comparisons", "baseline_vs_random_forest.csv")
     cm_plot = os.path.join("results", "plots", "confusion_matrices.png")
@@ -545,7 +546,7 @@ def display_benchmark_report():
         if os.path.exists(cm_plot):
             st.image(cm_plot, caption="Side-by-Side Confusion Matrices on Held-Out Test Set", width="stretch")
     with col2:
-        st.markdown(f"""
+        st.markdown(textwrap.dedent(f"""
         ### Key Scientific Observations
         1. **Reduction of False Rejection Rate (FRR):**
            - The Rule-Based baseline rejects **{b_frr:.1f}%** of clean products because any single slight threshold failure triggers rejection.
@@ -555,7 +556,7 @@ def display_benchmark_report():
            - Overall accuracy improves from **{b_acc:.1f}%** (Baseline) to **{rf_acc:.1f}%** (Random Forest).
         3. **Top Decisive DIP Features:**
            - {top_feat_str} are the most influential signals in the ensemble decision trees.
-        """)
+        """))
 
     st.markdown("---")
     st.subheader("🌲 Random Forest Model Generalization & Feature Analysis")
